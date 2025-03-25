@@ -33,13 +33,43 @@ class SettingsController extends Controller
         ]);
     }
 
+    public function newEdit()
+    {
+        return Inertia::render('NewSettings/Index', [
+            'openAtLogin' => App::openAtLogin(),
+            'showTimerOnUnlock' => Settings::get('showTimerOnUnlock'),
+            'workdays' => Settings::get('workdays'),
+            'holidayRegion' => Settings::get('holidayRegion'),
+            'stopBreakAutomatic' => Settings::get('stopBreakAutomatic'),
+            'stopBreakAutomaticActivationTime' => Settings::get('stopBreakAutomaticActivationTime'),
+            'stopWorkTimeReset' => Settings::get('stopWorkTimeReset'),
+            'stopBreakTimeReset' => Settings::get('stopBreakTimeReset'),
+            'locale' => Settings::get('locale'),
+            'appActivityTracking' => Settings::get('appActivityTracking'),
+        ]);
+    }
+
     /**
      * Update the specified resource in storage.
      */
     public function update(StoreSettingsRequest $request)
     {
         $data = $request->validated();
+        $this->updateing($data);
 
+        return redirect()->route('settings.edit');
+    }
+
+    public function newUpdate(StoreSettingsRequest $request)
+    {
+        $data = $request->validated();
+        $this->updateing($data);
+
+        return redirect()->route('test');
+    }
+
+    private function updateing(array $data): void
+    {
         Settings::set('showTimerOnUnlock', $data['showTimerOnUnlock']);
         Settings::set('workdays', $data['workdays']);
         Settings::set('holidayRegion', $data['holidayRegion']);
@@ -59,8 +89,6 @@ class SettingsController extends Controller
         }
 
         CalculateWeekBalance::dispatch();
-
-        return redirect()->route('settings.edit');
     }
 
     public function updateLocale(UpdateLocaleRequest $request)

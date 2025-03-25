@@ -27,8 +27,30 @@ class WindowService
             ->resizable(false);
     }
 
+    public static function openNewSettings(): void
+    {
+        Window::open('new-settings')
+            ->webPreferences([
+                'devTools' => false,
+            ])
+            ->rememberState()
+            ->route('settings.new-edit')
+            ->minWidth(750)
+            ->width(750)
+            ->maxWidth(750)
+            ->minHeight(570)
+            ->height(570)
+            ->fullscreenable(false)
+            ->showDevTools(false)
+            ->titleBarHidden()
+            ->backgroundColor('#00000000')
+            ->vibrancy('under-window');
+    }
+
     public static function openSettings(bool $darkMode): void
     {
+        self::openNewSettings();
+        return;
         Window::open('settings')
             ->webPreferences([
                 'devTools' => false,

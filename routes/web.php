@@ -26,8 +26,10 @@ Route::name('menubar.')->prefix('menubar')->group(function () {
 });
 
 Route::name('settings.')->prefix('settings')->group(function () {
+    Route::get('new', [SettingsController::class, 'newEdit'])->name('new-edit');
     Route::get('edit', [SettingsController::class, 'edit'])->name('edit');
     Route::patch('', [SettingsController::class, 'update'])->name('update');
+    Route::patch('', [SettingsController::class, 'newUpdate'])->name('new-update');
     Route::patch('locale', [SettingsController::class, 'updateLocale'])->name('updateLocale');
 });
 
